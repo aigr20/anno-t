@@ -129,6 +129,7 @@
                 <generatePom>false</generatePom>
                 <useSwaggerAnnotations>false</useSwaggerAnnotations>
                 <openApiNullable>false</openApiNullable>
+                <returnResponse>true</returnResponse>
                 <apiPackage>${project.groupId}.anno.generated.api</apiPackage>
                 <modelPackage>${project.groupId}.anno.generated.model</modelPackage>
               </configOptions>

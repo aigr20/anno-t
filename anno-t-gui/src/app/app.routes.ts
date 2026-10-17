@@ -4,6 +4,11 @@ export const routes: Routes = [
   {
     path: "",
     loadComponent: () =>
-      import("./pages/anno-t-page/anno-t-page.component").then((m) => m.AnnoTPageComponent),
+      import("./pages/start-page/start-page.component").then((m) => m.StartPageComponent),
+  },
+  {
+    path: "game",
+    loadComponent: () =>
+      import("./pages/game-page/game-page.component").then((m) => m.GamePageComponent),
   },
 ];
