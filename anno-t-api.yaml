@@ -1,0 +1,37 @@
+openapi: 3.1.0
+info:
+  title: Anno + Not
+  version: 1.0.0
+
+paths:
+  /question/{index}:
+    get:
+      operationId: getQuestion
+      summary: Get the question at the given index
+      tags:
+        - Question
+      parameters:
+        - in: path
+          name: index
+          schema:
+            type: integer
+          required: true
+          description: "The index of the question to get"
+      responses:
+        "200":
+          description: "The question"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Question"
+
+components:
+  schemas:
+    Question:
+      type: object
+      description: "A question"
+      required:
+        - question
+      properties:
+        question:
+          type: string
