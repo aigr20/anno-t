@@ -1,1 +1,4 @@
 <p>{{ currentQuestion()?.question }}</p>
+
+<p>{{ currentGuess() | bcAd }}</p>
+<app-adjust-guess-buttons (adjust)="adjustGuessBy($event)"></app-adjust-guess-buttons>
