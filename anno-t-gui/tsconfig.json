@@ -15,8 +15,13 @@
         "module": "preserve",
         "verbatimModuleSyntax": true,
         "paths": {
-            "@anno-t/*": ["./src/app/*"]
-        }
+            "@anno-t/*": ["./src/app/*"],
+            "@anno-t/generated-openapi": [
+                "./src/generated-openapi/index.ts",
+                "./src/generated-openapi/providers.ts"
+            ]
+        },
+        "types": ["node"]
     },
     "angularCompilerOptions": {
         "enableI18nLegacyMessageIdFormat": false,
