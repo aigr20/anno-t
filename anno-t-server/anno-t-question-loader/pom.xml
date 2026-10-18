@@ -13,6 +13,36 @@
 
   <artifactId>anno-t-question-loader</artifactId>
 
+  <dependencies>
+    <dependency>
+      <groupId>se.aigr20</groupId>
+      <artifactId>anno-t-common</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.opencsv</groupId>
+      <artifactId>opencsv</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hibernate.orm</groupId>
+      <artifactId>hibernate-core</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies>
+
   <build>
     <plugins>
       <plugin>

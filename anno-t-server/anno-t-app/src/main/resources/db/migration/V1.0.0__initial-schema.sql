@@ -5,5 +5,6 @@ create table anno.questions (
   question text not null,
   answer integer not null,
 
-  constraint pk_questions primary key (id)
+  constraint pk_questions primary key (id),
+  constraint question_unique unique (question)
 );
