@@ -1,4 +1,6 @@
 import { Component, inject, signal, type Signal, type WritableSignal } from "@angular/core";
+import { GameOrchestratorService } from "@anno-t/game/game-orchestrator.service";
+import { ScoreService } from "@anno-t/game/score.service";
 import type { Question } from "@anno-t/questions/question-types";
 import { QuestionsService } from "@anno-t/questions/questions.service";
 import { AdjustGuessButtonsComponent } from "./adjust-guess-buttons/adjust-guess-buttons.component";
@@ -12,15 +14,25 @@ import { BcAdPipe } from "./bc-ad.pipe";
 })
 export class GamePageComponent {
   readonly #questions: QuestionsService;
+  readonly #score: ScoreService;
+  readonly #gameOrchestrator: GameOrchestratorService;
   readonly #currentGuess: WritableSignal<number>;
 
   constructor() {
     this.#questions = inject(QuestionsService);
+    this.#score = inject(ScoreService);
+    this.#gameOrchestrator = inject(GameOrchestratorService);
     this.#currentGuess = signal(1000);
   }
 
   protected adjustGuessBy(by: number): void {
     this.#currentGuess.update((old) => old + by);
+  }
+
+  protected makeGuess(): void {
+    this.#gameOrchestrator
+      .makeGuess(this.#currentGuess())
+      .subscribe(() => this.#currentGuess.set(1000));
   }
 
   protected get currentQuestion(): Signal<Question | null> {
@@ -29,5 +41,9 @@ export class GamePageComponent {
 
   protected get currentGuess(): Signal<number> {
     return this.#currentGuess;
+  }
+
+  protected get currentScore(): Signal<number> {
+    return this.#score.score();
   }
 }

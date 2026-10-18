@@ -24,6 +24,31 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Question"
+    post:
+      operationId: makeGuess
+      summary: Guess the answer to the question at the given index
+      tags:
+        - Question
+      parameters:
+        - in: path
+          name: index
+          schema:
+            type: integer
+          required: true
+          description: "The index of the question to submit a guess for"
+      requestBody:
+        description: "The guess"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Guess"
+      responses:
+        "200":
+          description: "The result"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GuessResult"
 
 components:
   schemas:
@@ -35,3 +60,21 @@ components:
       properties:
         question:
           type: string
+    Guess:
+      type: object
+      description: "A guess"
+      required:
+        - year
+      properties:
+        year:
+          type: integer
+    GuessResult:
+      type: object
+      description: "The result of a guess"
+      required:
+        - score
+      properties:
+        score:
+          type: integer
+          min: 0
+          max: 100

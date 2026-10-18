@@ -1,4 +1,11 @@
+<p>Current score: {{ currentScore() }}</p>
+
 <p>{{ currentQuestion()?.question }}</p>
 
 <p>{{ currentGuess() | bcAd }}</p>
 <app-adjust-guess-buttons (adjust)="adjustGuessBy($event)"></app-adjust-guess-buttons>
+<button
+  type="button"
+  (click)="makeGuess()">
+  Submit answer
+</button>
