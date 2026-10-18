@@ -1,10 +1,10 @@
-package se.aigr20.anno.question.infrastructure.db;
+package se.aigr20.anno.common.question.infrastructure.db;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
-import se.aigr20.anno.domain.Question;
+import se.aigr20.anno.common.domain.Question;
 
 @ApplicationScoped
 public class QuestionRepository {

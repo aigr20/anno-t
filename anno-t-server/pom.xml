@@ -5,8 +5,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>se.aigr20</groupId>
-  <artifactId>anno-t-server</artifactId>
+  <artifactId>anno-t-parent</artifactId>
   <version>1.0.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
 
   <properties>
     <quarkus.version>3.40.1</quarkus.version>
@@ -14,6 +15,7 @@
     <maven-compiler-plugin.version>3.16.0</maven-compiler-plugin.version>
     <maven-resources-plugin.version>3.5.0</maven-resources-plugin.version>
     <maven-surefire-plugin.version>3.6.0</maven-surefire-plugin.version>
+    <maven-shade-plugin.version>3.6.2</maven-shade-plugin.version>
     <maven-jar-plugin.version>3.5.1</maven-jar-plugin.version>
     <jandex-maven-plugin.version>3.6.0</jandex-maven-plugin.version>
     <openapi-generator-maven-plugin.version>7.26.0</openapi-generator-maven-plugin.version>
@@ -21,6 +23,12 @@
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
+
+  <modules>
+    <module>anno-t-app</module>
+    <module>anno-t-common</module>
+    <module>anno-t-question-loader</module>
+  </modules>
 
   <dependencyManagement>
     <dependencies>
@@ -34,129 +42,85 @@
     </dependencies>
   </dependencyManagement>
 
-  <dependencies>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-core</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-rest-jackson</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-hibernate-validator</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-hibernate-orm</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-flyway</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>org.flywaydb</groupId>
-      <artifactId>flyway-database-postgresql</artifactId>
-    </dependency>
-
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-jdbc-postgresql</artifactId>
-    </dependency>
-  </dependencies>
-
   <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>${maven-compiler-plugin.version}</version>
-        <configuration>
-          <release>${java.version}</release>
-        </configuration>
-      </plugin>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>${maven-compiler-plugin.version}</version>
+          <configuration>
+            <release>${java.version}</release>
+          </configuration>
+        </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-resources-plugin</artifactId>
-        <version>${maven-resources-plugin.version}</version>
-      </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>${maven-resources-plugin.version}</version>
+        </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>${maven-surefire-plugin.version}</version>
-      </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>${maven-surefire-plugin.version}</version>
+        </plugin>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>${maven-jar-plugin.version}</version>
-      </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>${maven-shade-plugin.version}</version>
+        </plugin>
 
-      <plugin>
-        <groupId>io.quarkus</groupId>
-        <artifactId>quarkus-maven-plugin</artifactId>
-        <version>${quarkus.version}</version>
-        <extensions>true</extensions>
-        <executions>
-          <execution>
-            <goals>
-              <goal>build</goal>
-              <goal>generate-code</goal>
-              <goal>generate-code-tests</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>${maven-jar-plugin.version}</version>
+        </plugin>
 
-      <plugin>
-        <groupId>io.smallrye</groupId>
-        <artifactId>jandex-maven-plugin</artifactId>
-        <version>${jandex-maven-plugin.version}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>jandex</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
+        <plugin>
+          <groupId>io.quarkus</groupId>
+          <artifactId>quarkus-maven-plugin</artifactId>
+          <version>${quarkus.version}</version>
+          <extensions>true</extensions>
+          <executions>
+            <execution>
+              <id>build-app</id>
+              <goals>
+                <goal>build</goal>
+              </goals>
+              <configuration>
+                <skip>true</skip>
+              </configuration>
+            </execution>
+            <execution>
+              <goals>
+                <goal>generate-code</goal>
+                <goal>generate-code-tests</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
 
-      <plugin>
-        <groupId>org.openapitools</groupId>
-        <artifactId>openapi-generator-maven-plugin</artifactId>
-        <version>${openapi-generator-maven-plugin.version}</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-            <configuration>
-              <inputSpec>${project.basedir}/../anno-t-api.yaml</inputSpec>
-              <generatorName>jaxrs-spec</generatorName>
-              <configOptions>
-                <sourceFolder>src/gen/java/main</sourceFolder>
-                <dateLibrary>java8</dateLibrary>
-                <useJakartaEe>true</useJakartaEe>
-                <interfaceOnly>true</interfaceOnly>
-                <generatePom>false</generatePom>
-                <useSwaggerAnnotations>false</useSwaggerAnnotations>
-                <openApiNullable>false</openApiNullable>
-                <returnResponse>true</returnResponse>
-                <apiPackage>${project.groupId}.anno.generated.api</apiPackage>
-                <modelPackage>${project.groupId}.anno.generated.model</modelPackage>
-              </configOptions>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
+        <plugin>
+          <groupId>io.smallrye</groupId>
+          <artifactId>jandex-maven-plugin</artifactId>
+          <version>${jandex-maven-plugin.version}</version>
+          <executions>
+            <execution>
+              <goals>
+                <goal>jandex</goal>
+              </goals>
+            </execution>
+          </executions>
+        </plugin>
+
+        <plugin>
+          <groupId>org.openapitools</groupId>
+          <artifactId>openapi-generator-maven-plugin</artifactId>
+          <version>${openapi-generator-maven-plugin.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 </project>

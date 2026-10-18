@@ -1,4 +1,4 @@
-package se.aigr20.anno.domain;
+package se.aigr20.anno.common.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
