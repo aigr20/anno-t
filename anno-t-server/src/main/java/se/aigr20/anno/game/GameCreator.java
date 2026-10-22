@@ -12,18 +12,19 @@ import jakarta.transaction.Transactional.TxType;
 
 import se.aigr20.anno.domain.Game;
 import se.aigr20.anno.domain.Question;
+import se.aigr20.anno.game.application.QuestionsForGameProvider;
 import se.aigr20.anno.game.infrastructure.db.GameRepository;
 
 @ApplicationScoped
 public class GameCreator {
   private final GameRepository gameRepository;
-  private final QuestionsForGameDomainService questionsForGameDomainService;
+  private final QuestionsForGameProvider questionProvider;
 
   @Inject
   GameCreator(final GameRepository gameRepository,
-              final QuestionsForGameDomainService questionsForGameDomainService) {
+              final QuestionsForGameProvider questionProvider) {
     this.gameRepository = gameRepository;
-    this.questionsForGameDomainService = questionsForGameDomainService;
+    this.questionProvider = questionProvider;
   }
 
   @Transactional(TxType.REQUIRED)
@@ -37,7 +38,7 @@ public class GameCreator {
             .toLocalDate()
             .atStartOfDay(ZoneId.of("Europe/Stockholm"))
             .toOffsetDateTime());
-    final List<Question> questions = questionsForGameDomainService.getQuestionsForNextGame();
+    final List<Question> questions = questionProvider.getQuestionsForNextGame(5);
     if (questions.size() < 5) {
       throw new IllegalStateException("Could not create a new game due to not enough questions. Only received " +
                                       questions.size());

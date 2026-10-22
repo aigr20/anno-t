@@ -9,9 +9,10 @@ import jakarta.transaction.Transactional;
 import jakarta.transaction.Transactional.TxType;
 
 import se.aigr20.anno.domain.Question;
+import se.aigr20.anno.game.application.QuestionsForGameProvider;
 
 @ApplicationScoped
-public class QuestionRepository {
+public class QuestionRepository implements QuestionsForGameProvider {
   private final EntityManager entityManager;
 
   @Inject
@@ -24,6 +25,7 @@ public class QuestionRepository {
   }
 
   @Transactional(TxType.MANDATORY)
+  @Override
   public List<Question> getQuestionsForNextGame(final int count) {
     final String sql = "from Question question where question.gameId is null order by question.id asc";
     return entityManager.createQuery(sql, Question.class).setMaxResults(count).getResultList();
