@@ -12,6 +12,7 @@
   <properties>
     <quarkus.version>3.40.1</quarkus.version>
     <opencsv.version>5.12.0</opencsv.version>
+    <assertj.version>3.27.7</assertj.version>
 
     <maven-compiler-plugin.version>3.16.0</maven-compiler-plugin.version>
     <maven-resources-plugin.version>3.5.0</maven-resources-plugin.version>
@@ -45,6 +46,13 @@
         <groupId>com.opencsv</groupId>
         <artifactId>opencsv</artifactId>
         <version>${opencsv.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>${assertj.version}</version>
+        <scope>test</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

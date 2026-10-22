@@ -22,6 +22,8 @@ public class Question {
 
   @Column(name = "answer", nullable = false) private int correctAnswer;
 
+  @Column(name = "game_id") private Long gameId;
+
   protected Question() {
   }
 
