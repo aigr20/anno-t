@@ -1,7 +1,8 @@
 package se.aigr20.anno.game;
 
+import static se.aigr20.anno.common.Constants.ZONE_SWEDEN;
+
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +37,7 @@ public class GameCreator {
 
     final Game newGame = new Game(atDate
             .toLocalDate()
-            .atStartOfDay(ZoneId.of("Europe/Stockholm"))
+            .atStartOfDay(ZONE_SWEDEN)
             .toOffsetDateTime());
     final List<Question> questions = questionProvider.getQuestionsForNextGame(5);
     if (questions.size() < 5) {

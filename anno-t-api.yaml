@@ -4,32 +4,34 @@ info:
   version: 1.0.0
 
 paths:
-  /question/{index}:
+  /game/current:
     get:
-      operationId: getQuestion
-      summary: Get the question at the given index
+      operationId: getCurrentGame
+      summary: Get the currently active game
       tags:
-        - Question
-      parameters:
-        - in: path
-          name: index
-          schema:
-            type: integer
-          required: true
-          description: "The index of the question to get"
+        - Game
       responses:
         "200":
-          description: "The question"
+          description: "The game and its associated questions"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Question"
+                $ref: "#/components/schemas/Game"
+
+  /game/{gameId}/question/{index}:
     post:
       operationId: makeGuess
       summary: Guess the answer to the question at the given index
       tags:
-        - Question
+        - Game
       parameters:
+        - in: path
+          name: gameId
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: "The current game id"
         - in: path
           name: index
           schema:
@@ -49,9 +51,33 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GuessResult"
+        "404":
+          description: "That game, or that question does not exist"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DetailedError"
 
 components:
   schemas:
+    Game:
+      type: object
+      required:
+        - id
+        - expires
+        - questions
+      properties:
+        id:
+          type: string
+          format: uuid
+        expires:
+          type: string
+          format: date-time
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Question"
+
     Question:
       type: object
       description: "A question"
@@ -78,3 +104,23 @@ components:
           type: integer
           min: 0
           max: 100
+
+    DetailedError:
+      type: object
+      required:
+        - type
+        - status
+        - title
+      properties:
+        type:
+          type: string
+          enum:
+            - MISSING_GAME
+            - MISSING_QUESTION
+            - UNKNOWN
+        status:
+          type: integer
+        title:
+          type: string
+        detail:
+          type: string

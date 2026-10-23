@@ -8,9 +8,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
+import static se.aigr20.anno.common.Constants.ZONE_SWEDEN;
 
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -85,14 +85,11 @@ class GameCreatorTest {
     final Game createdGame = gameCaptor.getValue();
     assertThat(createdGame.getQuestions()).hasSize(5).containsExactlyElementsOf(upcomingQuestions);
     assertThat(createdGame.getStartTimestamp())
-            .isEqualTo(now
-                    .toLocalDate()
-                    .atStartOfDay(ZoneId.of("Europe/Stockholm"))
-                    .toOffsetDateTime());
+            .isEqualTo(now.toLocalDate().atStartOfDay(ZONE_SWEDEN).toOffsetDateTime());
     assertThat(createdGame.getEndTimestamp())
             .isEqualTo(now
                     .toLocalDate()
-                    .atStartOfDay(ZoneId.of("Europe/Stockholm"))
+                    .atStartOfDay(ZONE_SWEDEN)
                     .toOffsetDateTime()
                     .withHour(23)
                     .withMinute(59)

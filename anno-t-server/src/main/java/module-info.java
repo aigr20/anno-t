@@ -11,4 +11,5 @@ module anno.app {
   requires jakarta.transaction;
   requires org.hibernate.orm.core;
   requires com.opencsv;
+  requires org.mapstruct;
 }
