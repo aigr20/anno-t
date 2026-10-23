@@ -40,6 +40,7 @@ paths:
           description: "The index of the question to submit a guess for"
       requestBody:
         description: "The guess"
+        required: true
         content:
           application/json:
             schema:
@@ -99,11 +100,17 @@ components:
       description: "The result of a guess"
       required:
         - score
+        - correctAnswer
+        - distanceFromCorrect
       properties:
         score:
           type: integer
           min: 0
           max: 100
+        correctAnswer:
+          type: integer
+        distanceFromCorrect:
+          type: integer
 
     DetailedError:
       type: object

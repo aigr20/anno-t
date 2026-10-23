@@ -47,6 +47,11 @@ public class Game {
     this.questions = new ArrayList<>();
   }
 
+  public GuessResult makeGuess(final Guess guess) {
+    final Question question = getQuestions().get(guess.questionIndex());
+    return question.guessAnswer(guess);
+  }
+
   public Long getId() {
     return id;
   }

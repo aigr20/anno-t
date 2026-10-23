@@ -1,5 +1,9 @@
 package se.aigr20.anno.domain;
 
+import static se.aigr20.anno.common.Constants.ZONE_SWEDEN;
+
+import java.time.OffsetDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,6 +34,18 @@ public class Question {
   public Question(final String question, final int answer) {
     this.question = question;
     this.correctAnswer = answer;
+  }
+
+  public GuessResult guessAnswer(final Guess guess) {
+    final int distanceFromCorrect = Math.abs(guess.year() - getCorrectAnswer());
+
+    final OffsetDateTime now = OffsetDateTime.now(ZONE_SWEDEN);
+
+    return new GuessResult(distanceFromCorrect,
+                           Math.abs(now.getYear() - getCorrectAnswer()),
+                           getCorrectAnswer(),
+                           // TODO: Temporary scoring
+                           Math.max(100 - distanceFromCorrect, 0));
   }
 
   public Long getId() {
