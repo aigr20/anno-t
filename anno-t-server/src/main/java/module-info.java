@@ -7,7 +7,6 @@ module anno.app {
   requires jakarta.validation;
   requires jakarta.annotation;
   requires jakarta.persistence;
-  requires quarkus.scheduler.api;
   requires jakarta.transaction;
   requires org.hibernate.orm.core;
   requires com.opencsv;

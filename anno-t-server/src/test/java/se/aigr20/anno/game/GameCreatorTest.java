@@ -2,7 +2,9 @@ package se.aigr20.anno.game;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
@@ -14,6 +16,8 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import jakarta.persistence.PersistenceException;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -95,6 +99,21 @@ class GameCreatorTest {
                     .withMinute(59)
                     .withSecond(59));
     assertThat(createdGame.getExternalId()).isNotNull();
+  }
+
+  @Test
+  @SuppressWarnings("unchecked")
+  void when_SomeoneCreatedGameBetweenLookupAndPersist_then_FetchCreatedGame() {
+    mockNUpcomingQuestions(5);
+    final OffsetDateTime now = OffsetDateTime.now();
+    final Game racingGame = mock(Game.class);
+    when(gameRepository.findActiveGameAtTimestamp(now))
+            .thenReturn(Optional.empty(), Optional.of(racingGame));
+    doThrow(new PersistenceException()).when(gameRepository).persist(any(Game.class));
+
+    final Game result = sut.ensureGameExists(now);
+
+    assertThat(result).isSameAs(racingGame);
   }
 
   void mockNUpcomingQuestions(final int count) {

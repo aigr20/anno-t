@@ -8,8 +8,8 @@ import java.util.Optional;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.PersistenceException;
 import jakarta.transaction.Transactional;
-import jakarta.transaction.Transactional.TxType;
 
 import se.aigr20.anno.domain.Game;
 import se.aigr20.anno.domain.Question;
@@ -28,11 +28,11 @@ public class GameCreator {
     this.questionProvider = questionProvider;
   }
 
-  @Transactional(TxType.REQUIRED)
-  public void ensureGameExists(final OffsetDateTime atDate) {
+  @Transactional
+  public Game ensureGameExists(final OffsetDateTime atDate) {
     final Optional<Game> existingGame = gameRepository.findActiveGameAtTimestamp(atDate);
     if (existingGame.isPresent()) {
-      return;
+      return existingGame.get();
     }
 
     final Game newGame = new Game(atDate
@@ -49,6 +49,16 @@ public class GameCreator {
       newGame.addQuestion(question);
     }
 
-    gameRepository.persist(newGame);
+    try {
+      gameRepository.persist(newGame);
+    } catch (final PersistenceException e) {
+      // Someone has probably created the game between our lookup and us creating the game ourselves
+      // If not, fail
+      return gameRepository
+              .findActiveGameAtTimestamp(atDate)
+              .orElseThrow(() -> new IllegalStateException("Failed to both create and get active game"));
+    }
+
+    return newGame;
   }
 }

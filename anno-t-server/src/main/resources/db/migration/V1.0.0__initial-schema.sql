@@ -6,7 +6,11 @@ create table anno.created_games (
   end_date timestamp with time zone not null,
   ext_id uuid not null,
 
-  constraint pk_games primary key (id)
+  constraint pk_games primary key (id),
+  constraint valid_game_dates check (start_date < end_date),
+  constraint no_overlapping_game exclude using gist (
+    tstzrange(start_date, end_date, '[]') with &&
+  )
 );
 
 create sequence anno.question_pk_seq cache 1;
