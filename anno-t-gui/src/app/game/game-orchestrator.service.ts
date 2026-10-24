@@ -1,6 +1,6 @@
 import { inject, Service } from "@angular/core";
 import { Router } from "@angular/router";
-import { map, type Observable } from "rxjs";
+import { map, take, type Observable } from "rxjs";
 import { CurrentGameService } from "./current-game.service";
 import { ScoreService } from "./score.service";
 
@@ -18,6 +18,14 @@ export class GameOrchestratorService {
 
   begin(): void {
     this.#currentGame.startGame().subscribe(() => this.#router.navigate(["game"]));
+    this.#currentGame
+      .endOfGame$()
+      .pipe(take(1))
+      .subscribe(() => this.endGame());
+  }
+
+  endGame(): void {
+    this.#router.navigate(["game", "summary"]);
   }
 
   makeGuess(guess: number): Observable<void> {

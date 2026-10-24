@@ -1,6 +1,6 @@
 import { computed, inject, Service, signal, type Signal, type WritableSignal } from "@angular/core";
 import { GameService, type Game, type GuessResult, type Question } from "@anno-t/generated-openapi";
-import { map, tap, type Observable } from "rxjs";
+import { map, Subject, type Observable } from "rxjs";
 
 @Service()
 export class CurrentGameService {
@@ -9,6 +9,7 @@ export class CurrentGameService {
   readonly #questionIndex: WritableSignal<number>;
   readonly #questionCount: Signal<number>;
   readonly #currentQuestion: Signal<Question | null>;
+  readonly #endOfGameNotifier: Subject<void>;
 
   constructor() {
     this.#gameApi = inject(GameService);
@@ -22,6 +23,7 @@ export class CurrentGameService {
       }
       return game.questions[this.#questionIndex()];
     });
+    this.#endOfGameNotifier = new Subject();
   }
 
   startGame(): Observable<Game> {
@@ -46,7 +48,8 @@ export class CurrentGameService {
 
   advanceToNextQuestion(): void {
     if (this.#questionIndex() >= this.#questionCount() - 1) {
-      console.error("Already at end of game");
+      this.#endOfGameNotifier.next();
+      this.#endOfGameNotifier.complete();
       return;
     }
     this.#questionIndex.update((old) => old + 1);
@@ -58,6 +61,10 @@ export class CurrentGameService {
 
   totalQuestionsInGame(): Signal<number> {
     return this.#questionCount;
+  }
+
+  endOfGame$(): Observable<void> {
+    return this.#endOfGameNotifier;
   }
 
   private requireCurrentGame(): Game {
