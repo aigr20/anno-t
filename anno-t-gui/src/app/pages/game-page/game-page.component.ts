@@ -3,8 +3,8 @@ import { GameOrchestratorService } from "@anno-t/game/game-orchestrator.service"
 import { ScoreService } from "@anno-t/game/score.service";
 import type { Question } from "@anno-t/questions/question-types";
 import { AdjustGuessButtonsComponent } from "./adjust-guess-buttons/adjust-guess-buttons.component";
-import { BcAdPipe } from "./bc-ad.pipe";
 import { CurrentGameService } from "@anno-t/game/current-game.service";
+import { BcAdPipe } from "@anno-t/common/bc-ad.pipe";
 
 @Component({
   imports: [AdjustGuessButtonsComponent, BcAdPipe],

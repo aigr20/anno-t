@@ -1,0 +1,31 @@
+<table>
+  <thead>
+    <tr>
+      <th>Question</th>
+      <th>Your answer</th>
+      <th>Correct answer</th>
+      <th>Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (answer of answers(); track answer.question) {
+      <tr>
+        <td>{{ answer.question }}</td>
+        <td>{{ answer.answer | bcAd }}</td>
+        <td>
+          {{ answer.correctAnswer | bcAd }}
+          @if (shouldPresentDifference(answer)) {
+            ({{ presentDifference(answer) }})
+          }
+        </td>
+        <td>{{ answer.receivedScore }}</td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+<button
+  type="button"
+  (click)="copyResults()">
+  Copy results
+</button>
