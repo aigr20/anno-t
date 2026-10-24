@@ -8,6 +8,7 @@ import jakarta.ws.rs.core.Response;
 import se.aigr20.anno.domain.GuessResult;
 import se.aigr20.anno.game.GameDomainService;
 import se.aigr20.anno.game.GameOrchestrator;
+import se.aigr20.anno.game.error.NoActiveGameException;
 import se.aigr20.anno.game.infrastructure.rest.mapping.GameMapper;
 import se.aigr20.anno.game.infrastructure.rest.mapping.ResultMapper;
 import se.aigr20.anno.generated.api.GameApi;
@@ -36,7 +37,7 @@ public class GameResource implements GameApi {
     final Game game = gameDomainService
             .findCurrentlyActiveGame()
             .map(gameMapper::toDto)
-            .orElseThrow();
+            .orElseThrow(() -> new NoActiveGameException());
 
     return Response.ok().entity(game).build();
   }

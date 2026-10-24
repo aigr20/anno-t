@@ -7,6 +7,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import se.aigr20.anno.domain.Game;
 import se.aigr20.anno.domain.GuessResult;
 import se.aigr20.anno.game.application.GameRegistry;
+import se.aigr20.anno.game.error.NoGameWithIdFoundException;
 import se.aigr20.anno.generated.model.Guess;
 
 @ApplicationScoped
@@ -18,7 +19,9 @@ public class GameOrchestrator {
   }
 
   public GuessResult makeGuess(final UUID gameId, final int questionIndex, final Guess guess) {
-    final Game game = games.findGameByExternalId(gameId).orElseThrow();
+    final Game game = games
+            .findGameByExternalId(gameId)
+            .orElseThrow(() -> new NoGameWithIdFoundException(gameId));
 
     return game.makeGuess(new se.aigr20.anno.domain.Guess(guess.getYear(), questionIndex));
   }
