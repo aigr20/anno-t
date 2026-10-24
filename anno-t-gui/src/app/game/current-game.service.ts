@@ -67,6 +67,10 @@ export class CurrentGameService {
     return this.#endOfGameNotifier;
   }
 
+  hasStartedGame(): boolean {
+    return this.#game() !== null;
+  }
+
   private requireCurrentGame(): Game {
     const game = this.#game();
     if (game === null) {

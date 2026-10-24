@@ -1,4 +1,5 @@
 import type { Routes } from "@angular/router";
+import { hasActiveGameGuard } from "./game/has-active-game.guard";
 
 export const routes: Routes = [
   {
@@ -10,6 +11,7 @@ export const routes: Routes = [
   {
     path: "game",
     title: "Anno't",
+    canActivate: [hasActiveGameGuard],
     loadComponent: () =>
       import("./pages/game-page/game-page.component").then((m) => m.GamePageComponent),
   },
