@@ -1,0 +1,21 @@
+<p>{{ question()?.question }}</p>
+
+@let questionResult = result();
+@if (questionResult) {
+  <p>
+    @if (questionResult.distanceFromCorrect === 0) {
+      Great job! You got it exactly!
+    } @else if (questionResult.distanceFromCorrect <= 5) {
+      Almost! You were only {{ questionResult.distanceFromCorrect }} years off.
+    } @else {
+      Sorry, you were {{ questionResult.distanceFromCorrect }} years off.
+    }
+    The answer was {{ questionResult.correctAnswer | bcAd }}.
+  </p>
+
+  <button
+    type="button"
+    (click)="loadNextQuestion()">
+    Next question
+  </button>
+}

@@ -1,4 +1,4 @@
-import { inject, Service } from "@angular/core";
+import { inject, Service, signal, type Signal, type WritableSignal } from "@angular/core";
 import { Router } from "@angular/router";
 import { RecordedAnswersService } from "@anno-t/questions/recorded-answers.service";
 import { map, take, type Observable } from "rxjs";
@@ -11,12 +11,14 @@ export class GameOrchestratorService {
   readonly #score: ScoreService;
   readonly #currentGame: CurrentGameService;
   readonly #answerHistory: RecordedAnswersService;
+  readonly #guess: WritableSignal<number>;
 
   constructor() {
     this.#router = inject(Router);
     this.#score = inject(ScoreService);
     this.#currentGame = inject(CurrentGameService);
     this.#answerHistory = inject(RecordedAnswersService);
+    this.#guess = signal(1000);
   }
 
   begin(): void {
@@ -25,13 +27,19 @@ export class GameOrchestratorService {
       .endOfGame$()
       .pipe(take(1))
       .subscribe(() => this.endGame());
+    this.#guess.set(1000);
   }
 
   endGame(): void {
     this.#router.navigate(["game", "summary"]);
   }
 
-  makeGuess(guess: number): Observable<void> {
+  adjustGuess(by: number): void {
+    this.#guess.update((old) => old + by);
+  }
+
+  makeGuess(): Observable<void> {
+    const guess = this.#guess();
     return this.#currentGame.makeGuess(guess).pipe(
       map((result) => {
         const guessedOnQuestion = this.#currentGame.currentQuestion()();
@@ -40,7 +48,6 @@ export class GameOrchestratorService {
         }
 
         this.#score.increaseScore(result.score);
-        this.#currentGame.advanceToNextQuestion();
 
         this.#answerHistory.record({
           answer: guess,
@@ -50,5 +57,14 @@ export class GameOrchestratorService {
         });
       }),
     );
+  }
+
+  nextQuestion(): void {
+    this.#currentGame.advanceToNextQuestion();
+    this.#guess.set(1000);
+  }
+
+  currentGuess(): Signal<number> {
+    return this.#guess;
   }
 }

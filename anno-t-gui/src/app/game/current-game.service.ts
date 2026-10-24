@@ -1,6 +1,6 @@
 import { computed, inject, Service, signal, type Signal, type WritableSignal } from "@angular/core";
 import { GameService, type Game, type GuessResult, type Question } from "@anno-t/generated-openapi";
-import { map, Subject, type Observable } from "rxjs";
+import { map, Subject, tap, type Observable } from "rxjs";
 
 @Service()
 export class CurrentGameService {
@@ -9,6 +9,7 @@ export class CurrentGameService {
   readonly #questionIndex: WritableSignal<number>;
   readonly #questionCount: Signal<number>;
   readonly #currentQuestion: Signal<Question | null>;
+  readonly #currentResult: WritableSignal<GuessResult | null>;
   readonly #endOfGameNotifier: Subject<void>;
 
   constructor() {
@@ -23,6 +24,7 @@ export class CurrentGameService {
       }
       return game.questions[this.#questionIndex()];
     });
+    this.#currentResult = signal(null);
     this.#endOfGameNotifier = new Subject();
   }
 
@@ -43,7 +45,9 @@ export class CurrentGameService {
   makeGuess(guess: number): Observable<GuessResult> {
     const game = this.requireCurrentGame();
 
-    return this.#gameApi.makeGuess(game.id, this.#questionIndex(), { year: guess });
+    return this.#gameApi
+      .makeGuess(game.id, this.#questionIndex(), { year: guess })
+      .pipe(tap((result) => this.#currentResult.set(result)));
   }
 
   advanceToNextQuestion(): void {
@@ -53,10 +57,15 @@ export class CurrentGameService {
       return;
     }
     this.#questionIndex.update((old) => old + 1);
+    this.#currentResult.set(null);
   }
 
   currentQuestion(): Signal<Question | null> {
     return this.#currentQuestion;
+  }
+
+  currentResult(): Signal<GuessResult | null> {
+    return this.#currentResult;
   }
 
   totalQuestionsInGame(): Signal<number> {
