@@ -4,15 +4,21 @@
     --btn-bg-highlight: #373d61;
     --btn-text: #fcfcfc;
 
+    --text-xl: 2.4rem;
     --text-l: 2rem;
     --text-m: 1.7rem;
     --text-s: 1.5rem;
+
+    --main-max-width: 50%;
 }
 
 @media screen and (width < 1366px) {
     :root {
+        --text-xl: 1.8rem;
         --text-l: 1.5rem;
         --text-m: 1.2rem;
         --text-s: 1rem;
+
+        --main-max-width: 100%;
     }
 }

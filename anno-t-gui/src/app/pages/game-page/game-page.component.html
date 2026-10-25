@@ -1,9 +1,7 @@
-<p>Current score: {{ currentScore() }}</p>
-
-<main class="game-container">
+<app-base-layout>
   <app-current-question></app-current-question>
 
   @if (!isDisplayingResult()) {
     <app-make-guess class="guess-container"></app-make-guess>
   }
-</main>
+</app-base-layout>

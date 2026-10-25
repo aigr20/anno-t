@@ -1,18 +1,3 @@
-:host {
-    --game-max-width: 50%;
-}
-
-.game-container {
-    max-width: var(--game-max-width);
-    margin: 0 auto;
-}
-
 .guess-container {
     margin-top: 0.75rem;
-}
-
-@media screen and (width < 1366px) {
-    :host {
-        --game-max-width: 100%;
-    }
 }

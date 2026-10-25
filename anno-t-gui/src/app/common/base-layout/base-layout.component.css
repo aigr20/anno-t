@@ -1,0 +1,4 @@
+.main-container {
+    max-width: var(--main-max-width);
+    margin: 0 auto;
+}
