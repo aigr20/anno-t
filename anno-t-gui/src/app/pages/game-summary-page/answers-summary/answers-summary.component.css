@@ -1,0 +1,30 @@
+:host {
+    display: block;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 0.5rem;
+}
+
+.heading {
+    font-size: var(--text-m);
+    padding: 0 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--btn-bg);
+}
+
+.data {
+    font-size: var(--text-s);
+    padding: 0.25rem;
+    border-bottom: 1px solid var(--btn-bg);
+}
+
+tr:last-child .data {
+    border-bottom: none;
+}
+
+.copy-btn {
+    display: block;
+    margin-left: auto;
+}

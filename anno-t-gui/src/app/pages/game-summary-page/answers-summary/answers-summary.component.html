@@ -1,24 +1,24 @@
 <table>
   <thead>
     <tr>
-      <th>Question</th>
-      <th>Your answer</th>
-      <th>Correct answer</th>
-      <th>Score</th>
+      <th class="heading">Question</th>
+      <th class="heading">Your answer</th>
+      <th class="heading">Correct answer</th>
+      <th class="heading">Score</th>
     </tr>
   </thead>
   <tbody>
     @for (answer of answers(); track answer.question) {
       <tr>
-        <td>{{ answer.question }}</td>
-        <td>{{ answer.userAnswer | bcAd }}</td>
-        <td>
+        <td class="data">{{ answer.question }}</td>
+        <td class="data">{{ answer.userAnswer | bcAd }}</td>
+        <td class="data">
           {{ answer.correctAnswer | bcAd }}
           @if (shouldPresentDifference(answer)) {
             ({{ presentDifference(answer) }})
           }
         </td>
-        <td>{{ answer.scoreReceived }}</td>
+        <td class="data">{{ answer.scoreReceived }}</td>
       </tr>
     }
   </tbody>
@@ -26,7 +26,7 @@
 
 <button
   type="button"
-  class="btn"
+  class="btn copy-btn"
   (click)="copyResults()">
   Copy results
 </button>

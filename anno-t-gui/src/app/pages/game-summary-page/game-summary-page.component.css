@@ -1,0 +1,27 @@
+:host {
+    --container-width: 50%;
+}
+
+.summary-container {
+    max-width: var(--container-width);
+    margin: 0 auto;
+}
+
+.label,
+.score {
+    padding: 0.5rem 0;
+}
+
+.label {
+    font-size: var(--text-l);
+}
+
+.score {
+    font-size: var(--text-s);
+}
+
+@media screen and (width < 1366px) {
+    :host {
+        --container-width: 100%;
+    }
+}
