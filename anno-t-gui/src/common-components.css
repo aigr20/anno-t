@@ -1,0 +1,16 @@
+.btn {
+    background: var(--btn-bg);
+    border: none;
+    padding: 0.75rem;
+    border-radius: 0;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 10%;
+    font-size: var(--text-s);
+    color: var(--btn-text);
+    width: fit-content;
+}
+
+.btn:hover {
+    background: var(--btn-bg-highlight);
+}

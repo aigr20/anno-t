@@ -27,6 +27,10 @@ export class CurrentQuestionComponent {
     return this.#currentGame.currentQuestion();
   }
 
+  protected get guess(): Signal<number> {
+    return this.#gameOrchestrator.currentGuess();
+  }
+
   protected get result(): Signal<GuessResult | null> {
     return this.#currentGame.currentResult();
   }

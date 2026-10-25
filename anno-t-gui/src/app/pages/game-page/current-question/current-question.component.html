@@ -1,8 +1,19 @@
-<p>{{ question()?.question }}</p>
+<p class="question">{{ question()?.question }}</p>
 
 @let questionResult = result();
 @if (questionResult) {
-  <p>
+  <div class="result-presentation">
+    <div class="guess-container">
+      <span>Your guess</span>
+      <span class="year">{{ guess() | bcAd }}</span>
+    </div>
+    <span>VS</span>
+    <div class="answer-container">
+      <span>Correct answer</span>
+      <span class="year">{{ questionResult.correctAnswer | bcAd }}</span>
+    </div>
+  </div>
+  <p class="result-opinion">
     @if (questionResult.distanceFromCorrect === 0) {
       Great job! You got it exactly!
     } @else if (questionResult.distanceFromCorrect <= 5) {
@@ -10,11 +21,12 @@
     } @else {
       Sorry, you were {{ questionResult.distanceFromCorrect }} years off.
     }
-    The answer was {{ questionResult.correctAnswer | bcAd }}.
   </p>
+  <p class="score-result">You received {{ questionResult.score }} points.</p>
 
   <button
     type="button"
+    class="btn next-question"
     (click)="loadNextQuestion()">
     Next question
   </button>

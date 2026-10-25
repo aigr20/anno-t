@@ -1,0 +1,21 @@
+@font-face {
+    font-family: "Fjalla One";
+    src: url("/FjallaOne-Regular.ttf") format("truetype");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Fjalla One";
+}
+
+html {
+    font-size: 100%;
+    background: var(--bg);
+}
+
+body {
+    width: 100%;
+    padding: 10px;
+}

@@ -1,0 +1,14 @@
+:host {
+    --question-max-width: 50%;
+}
+
+.question-container {
+    max-width: var(--question-max-width);
+    margin: 0 auto;
+}
+
+@media screen and (width < 1366px) {
+    :host {
+        --question-max-width: 100%;
+    }
+}
