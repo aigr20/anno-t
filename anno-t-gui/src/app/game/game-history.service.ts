@@ -1,9 +1,11 @@
 import { inject, linkedSignal, Service, type WritableSignal } from "@angular/core";
 import { toObservable } from "@angular/core/rxjs-interop";
 import type { AnnoSchema } from "@anno-t/common/anno-schema";
+import type { Game } from "@anno-t/generated-openapi";
 import { IndexedDBService } from "@anno-t/idb/indexeddb.service";
 import { map, of, switchMap, take, throwError, type Observable } from "rxjs";
 import { CurrentGameService } from "./current-game.service";
+import { ScoreService } from "./score.service";
 
 export interface RecordedGame {
   readonly id: string;
@@ -11,7 +13,7 @@ export interface RecordedGame {
   readonly gameBegan: Date;
   readonly gameExpired: Date;
   readonly gameCompleted?: Date;
-  readonly score?: number;
+  readonly score: number;
 }
 
 export interface HistoricalAnswer {
@@ -25,24 +27,38 @@ export interface HistoricalAnswer {
 export class GameHistoryService {
   readonly #currentGame: CurrentGameService;
   readonly #idb: IndexedDBService<AnnoSchema>;
+  readonly #score: ScoreService;
   readonly #localGame: WritableSignal<RecordedGame | null>;
   readonly #localGame$: Observable<RecordedGame | null>;
 
   constructor() {
     this.#currentGame = inject(CurrentGameService);
     this.#idb = inject<IndexedDBService<AnnoSchema>>(IndexedDBService);
-    this.#localGame = linkedSignal(() => {
-      const game = this.#currentGame.activeGame();
-      if (!game) {
-        return null;
-      }
+    this.#score = inject(ScoreService);
 
-      return {
-        id: game.id,
-        gameBegan: new Date(game.begins),
-        gameExpired: new Date(game.expires),
-        answers: [],
-      };
+    this.#localGame = linkedSignal<Game | null, RecordedGame | null>({
+      source: this.#currentGame.activeGame(),
+      computation: (newValue, old) => {
+        const score = this.#score.score()();
+        if (!newValue) {
+          return null;
+        }
+
+        if (!old?.value) {
+          return {
+            id: newValue.id,
+            gameBegan: new Date(newValue.begins),
+            gameExpired: new Date(newValue.expires),
+            answers: [],
+            score: 0,
+          } satisfies RecordedGame;
+        }
+
+        return {
+          ...old.value,
+          score,
+        } satisfies RecordedGame;
+      },
     });
 
     this.#localGame$ = toObservable(this.#localGame);
