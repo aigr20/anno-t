@@ -1,0 +1,23 @@
+[Unit]
+Description=API server for Anno't
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=anno
+Group=anno
+WorkingDirectory=/opt/anno
+EnvironmentFile=/etc/anno.env
+ExecStart=/opt/java/25/bin/java -jar /opt/anno/quarkus-run.jar
+Restart=on-failure
+RestartSec=5
+SuccessExitStatus=143
+
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
