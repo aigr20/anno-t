@@ -62,13 +62,13 @@ export class GameHistoryService {
     });
   }
 
-  recordGame(): void {
+  recordGame(): Observable<void> {
     const toRecord = this.#localGame();
     if (!toRecord) {
       throw new Error("No game to record");
     }
 
-    this.#idb.add("game-history", toRecord).subscribe();
+    return this.#idb.add("game-history", toRecord).pipe(map(() => void 0));
   }
 
   todaysPlayedGame(): Observable<RecordedGame> {

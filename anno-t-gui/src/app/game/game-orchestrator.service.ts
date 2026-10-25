@@ -31,8 +31,9 @@ export class GameOrchestratorService {
   }
 
   endGame(): void {
-    this.#gameHistory.recordGame();
-    this.#router.navigate(["game", "summary"]);
+    this.#gameHistory.recordGame().subscribe(() => {
+      this.#router.navigate(["game", "summary"]);
+    });
   }
 
   adjustGuess(by: number): void {

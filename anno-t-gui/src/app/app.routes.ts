@@ -1,6 +1,7 @@
 import type { Routes } from "@angular/router";
 import { hasActiveGameGuard } from "./game/has-active-game.guard";
 import { hasNotPlayedTodayGuard } from "./game/has-not-played-today.guard";
+import { hasPlayedTodayGuard } from "./game/has-played-today.guard";
 
 export const routes: Routes = [
   {
@@ -20,6 +21,7 @@ export const routes: Routes = [
   {
     path: "game/summary",
     title: "Anno't - Summary",
+    canActivate: [hasPlayedTodayGuard],
     loadComponent: () =>
       import("./pages/game-summary-page/game-summary-page.component").then(
         (m) => m.GameSummaryPageComponent,
