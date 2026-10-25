@@ -65,12 +65,16 @@ components:
       type: object
       required:
         - id
+        - begins
         - expires
         - questions
       properties:
         id:
           type: string
           format: uuid
+        begins:
+          type: string
+          format: date-time
         expires:
           type: string
           format: date-time

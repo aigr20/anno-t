@@ -1,11 +1,18 @@
-import { Component, inject, type Signal } from "@angular/core";
-
 import {
-  RecordedAnswersService,
-  type RecordedAnswer,
-} from "@anno-t/questions/recorded-answers.service";
-import { CopySummaryService } from "./copy-summary.service";
+  Component,
+  computed,
+  inject,
+  signal,
+  type Signal,
+  type WritableSignal,
+} from "@angular/core";
 import { BcAdPipe } from "@anno-t/common/bc-ad.pipe";
+import {
+  GameHistoryService,
+  type HistoricalAnswer,
+  type RecordedGame,
+} from "@anno-t/game/game-history.service";
+import { CopySummaryService } from "./copy-summary.service";
 @Component({
   imports: [BcAdPipe],
   selector: "app-answers-summary",
@@ -13,24 +20,27 @@ import { BcAdPipe } from "@anno-t/common/bc-ad.pipe";
   templateUrl: "./answers-summary.component.html",
 })
 export class AnswersSummaryComponent {
-  readonly #answersRecord: RecordedAnswersService;
   readonly #shareService: CopySummaryService;
+  readonly #gameHistory: GameHistoryService;
+  readonly #historicalGame: WritableSignal<RecordedGame | null>;
 
   constructor() {
-    this.#answersRecord = inject(RecordedAnswersService);
+    this.#gameHistory = inject(GameHistoryService);
     this.#shareService = inject(CopySummaryService);
+    this.#historicalGame = signal(null);
+    this.#gameHistory.todaysPlayedGame().subscribe((game) => this.#historicalGame.set(game));
   }
 
-  protected get answers(): Signal<RecordedAnswer[]> {
-    return this.#answersRecord.answers();
+  protected get answers(): Signal<HistoricalAnswer[]> {
+    return computed(() => this.#historicalGame()?.answers ?? []);
   }
 
-  protected shouldPresentDifference(answer: RecordedAnswer): boolean {
+  protected shouldPresentDifference(answer: HistoricalAnswer): boolean {
     return this.#diff(answer) !== 0;
   }
 
-  protected presentDifference(answer: RecordedAnswer): string {
-    const diff = answer.answer - answer.correctAnswer;
+  protected presentDifference(answer: HistoricalAnswer): string {
+    const diff = answer.userAnswer - answer.correctAnswer;
     return `${diff}`;
   }
 
@@ -38,7 +48,7 @@ export class AnswersSummaryComponent {
     this.#shareService.copy();
   }
 
-  #diff(answer: RecordedAnswer): number {
-    return Math.abs(answer.answer - answer.correctAnswer);
+  #diff(answer: HistoricalAnswer): number {
+    return Math.abs(answer.userAnswer - answer.correctAnswer);
   }
 }

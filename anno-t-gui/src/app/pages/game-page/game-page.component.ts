@@ -1,8 +1,8 @@
 import { Component, computed, inject, type Signal } from "@angular/core";
+import { CurrentGameService } from "@anno-t/game/current-game.service";
 import { ScoreService } from "@anno-t/game/score.service";
 import { CurrentQuestionComponent } from "./current-question/current-question.component";
 import { MakeGuessComponent } from "./make-guess/make-guess.component";
-import { CurrentGameService } from "@anno-t/game/current-game.service";
 
 @Component({
   imports: [MakeGuessComponent, CurrentQuestionComponent],

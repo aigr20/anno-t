@@ -11,14 +11,14 @@
     @for (answer of answers(); track answer.question) {
       <tr>
         <td>{{ answer.question }}</td>
-        <td>{{ answer.answer | bcAd }}</td>
+        <td>{{ answer.userAnswer | bcAd }}</td>
         <td>
           {{ answer.correctAnswer | bcAd }}
           @if (shouldPresentDifference(answer)) {
             ({{ presentDifference(answer) }})
           }
         </td>
-        <td>{{ answer.receivedScore }}</td>
+        <td>{{ answer.scoreReceived }}</td>
       </tr>
     }
   </tbody>

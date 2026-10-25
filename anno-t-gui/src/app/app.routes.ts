@@ -1,17 +1,19 @@
 import type { Routes } from "@angular/router";
 import { hasActiveGameGuard } from "./game/has-active-game.guard";
+import { hasNotPlayedTodayGuard } from "./game/has-not-played-today.guard";
 
 export const routes: Routes = [
   {
     path: "",
     title: "Anno't",
+    canActivate: [hasNotPlayedTodayGuard],
     loadComponent: () =>
       import("./pages/start-page/start-page.component").then((m) => m.StartPageComponent),
   },
   {
     path: "game",
     title: "Anno't",
-    canActivate: [hasActiveGameGuard],
+    canActivate: [hasActiveGameGuard, hasNotPlayedTodayGuard],
     loadComponent: () =>
       import("./pages/game-page/game-page.component").then((m) => m.GamePageComponent),
   },

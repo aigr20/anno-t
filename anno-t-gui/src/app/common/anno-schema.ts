@@ -7,9 +7,19 @@ export type AnnoSchema = DefineSchema<{
   "game-history": {
     value: RecordedGame;
     key: string;
+    indices: [
+      {
+        name: "expired";
+        value: Date;
+      },
+    ];
   };
 }>;
 
 function schemaV1(db: IDBDatabase): void {
-  db.createObjectStore("game-history", { keyPath: "id", autoIncrement: false });
+  const historyStore = db.createObjectStore("game-history", {
+    keyPath: "id",
+    autoIncrement: false,
+  });
+  historyStore.createIndex("expired", "gameExpired");
 }
