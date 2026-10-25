@@ -12,6 +12,8 @@ import jakarta.inject.Inject;
 import jakarta.persistence.RollbackException;
 import jakarta.transaction.Transactional;
 
+import io.quarkus.logging.Log;
+
 import org.hibernate.exception.ConstraintViolationException;
 
 import com.opencsv.CSVReader;
@@ -25,35 +27,21 @@ import se.aigr20.anno.question.loader.csv.QuestionCsvBean;
 
 @Dependent
 public class QuestionLoaderService {
-  private final Properties properties;
+  private final QuestionLoaderConfig config;
   private final QuestionRepository repository;
 
   @Inject
-  QuestionLoaderService(final QuestionRepository repository) {
+  QuestionLoaderService(final QuestionLoaderConfig config, final QuestionRepository repository) {
+    this.config = config;
     this.repository = repository;
-    properties = new Properties();
-  }
-
-  public void loadConfiguration(final Path propertiesFile) throws IOException {
-    properties.load(Files.newInputStream(propertiesFile));
-
-    if (!properties.containsKey("jdbcUrl")) {
-      throw new IllegalArgumentException("Missing configuration key: jdbcUrl");
-    }
-
-    if (!properties.containsKey("jdbcUsername")) {
-      throw new IllegalArgumentException("Missing configuration key: jdbcUsername");
-    }
-
-    if (!properties.containsKey("jdbcPassword")) {
-      throw new IllegalArgumentException("Missing configuration key: jdbcPassword");
-    }
   }
 
   @Transactional
   public void loadQuestionsIntoDatabase() throws IOException {
-    try (final BufferedReader reader = Files
-            .newBufferedReader(Path.of((String) properties.get("csvPath")))) {
+    final Path csvPath = config
+            .filePath()
+            .orElseThrow(() -> new IllegalStateException("No CSV path to load questions from configured"));
+    try (final BufferedReader reader = Files.newBufferedReader(csvPath)) {
 
       final CSVReader csvReader = new CSVReaderBuilder(reader).build();
       final CsvToBean<QuestionCsvBean> toBean = new CsvToBeanBuilder<QuestionCsvBean>(csvReader)
@@ -69,8 +57,8 @@ public class QuestionLoaderService {
         }
       } catch (final RollbackException e) {
         if (e.getCause() instanceof ConstraintViolationException) {
-          System.err
-                  .println("Constraint violation detected. Ensure your CSV file contains no questions that already exist. Rolling back the transaction.");
+          Log
+                  .error("Constraint violation detected. Ensure your CSV file contains no questions that already exist. Rolling back the transaction.");
         }
         return;
       }
