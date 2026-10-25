@@ -1,0 +1,29 @@
+:host {
+    display: block;
+}
+
+.guess {
+    font-size: var(--text-l);
+    text-align: center;
+    text-decoration: underline;
+}
+
+.adjust-container {
+    display: flex;
+    flex-direction: row;
+    padding: 0.5rem 0;
+    gap: 0.5rem;
+    justify-content: space-evenly;
+}
+
+.submit-guess {
+    display: block;
+    margin: 0 auto;
+}
+
+@media screen and (width > 500px) {
+    .adjust-container {
+        justify-content: center;
+        gap: 1rem;
+    }
+}

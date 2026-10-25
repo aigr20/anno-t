@@ -1,14 +1,18 @@
 :host {
-    --question-max-width: 50%;
+    --game-max-width: 50%;
 }
 
-.question-container {
-    max-width: var(--question-max-width);
+.game-container {
+    max-width: var(--game-max-width);
     margin: 0 auto;
+}
+
+.guess-container {
+    margin-top: 0.75rem;
 }
 
 @media screen and (width < 1366px) {
     :host {
-        --question-max-width: 100%;
+        --game-max-width: 100%;
     }
 }

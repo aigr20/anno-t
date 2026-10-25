@@ -1,35 +1,26 @@
-import { Component, inject, type Signal } from "@angular/core";
-import { BcAdPipe } from "@anno-t/common/bc-ad.pipe";
-import { GameOrchestratorService } from "@anno-t/game/game-orchestrator.service";
+import { Component, computed, inject, type Signal } from "@angular/core";
 import { ScoreService } from "@anno-t/game/score.service";
-import { AdjustGuessButtonsComponent } from "./adjust-guess-buttons/adjust-guess-buttons.component";
 import { CurrentQuestionComponent } from "./current-question/current-question.component";
+import { MakeGuessComponent } from "./make-guess/make-guess.component";
+import { CurrentGameService } from "@anno-t/game/current-game.service";
 
 @Component({
-  imports: [AdjustGuessButtonsComponent, BcAdPipe, CurrentQuestionComponent],
+  imports: [MakeGuessComponent, CurrentQuestionComponent],
   selector: "app-game-page",
   styleUrl: "./game-page.component.css",
   templateUrl: "./game-page.component.html",
 })
 export class GamePageComponent {
+  protected readonly isDisplayingResult: Signal<boolean>;
+
   readonly #score: ScoreService;
-  readonly #gameOrchestrator: GameOrchestratorService;
+  readonly #currentGame: CurrentGameService;
 
   constructor() {
     this.#score = inject(ScoreService);
-    this.#gameOrchestrator = inject(GameOrchestratorService);
-  }
+    this.#currentGame = inject(CurrentGameService);
 
-  protected adjustGuessBy(by: number): void {
-    this.#gameOrchestrator.adjustGuess(by);
-  }
-
-  protected makeGuess(): void {
-    this.#gameOrchestrator.makeGuess().subscribe();
-  }
-
-  protected get currentGuess(): Signal<number> {
-    return this.#gameOrchestrator.currentGuess();
+    this.isDisplayingResult = computed(() => this.#currentGame.currentResult()() !== null);
   }
 
   protected get currentScore(): Signal<number> {

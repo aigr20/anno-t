@@ -1,13 +1,9 @@
 <p>Current score: {{ currentScore() }}</p>
 
-<app-current-question class="question-container"></app-current-question>
+<main class="game-container">
+  <app-current-question></app-current-question>
 
-<p>{{ currentGuess() | bcAd }}</p>
-
-<app-adjust-guess-buttons (adjust)="adjustGuessBy($event)"></app-adjust-guess-buttons>
-<button
-  type="button"
-  class="btn"
-  (click)="makeGuess()">
-  Submit answer
-</button>
+  @if (!isDisplayingResult()) {
+    <app-make-guess class="guess-container"></app-make-guess>
+  }
+</main>
