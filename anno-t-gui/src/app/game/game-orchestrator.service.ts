@@ -4,6 +4,7 @@ import { RecordedAnswersService } from "@anno-t/questions/recorded-answers.servi
 import { map, take, type Observable } from "rxjs";
 import { CurrentGameService } from "./current-game.service";
 import { ScoreService } from "./score.service";
+import { GameHistoryService } from "./game-history.service";
 
 @Service()
 export class GameOrchestratorService {
@@ -11,6 +12,7 @@ export class GameOrchestratorService {
   readonly #score: ScoreService;
   readonly #currentGame: CurrentGameService;
   readonly #answerHistory: RecordedAnswersService;
+  readonly #gameHistory: GameHistoryService;
   readonly #guess: WritableSignal<number>;
 
   constructor() {
@@ -18,6 +20,7 @@ export class GameOrchestratorService {
     this.#score = inject(ScoreService);
     this.#currentGame = inject(CurrentGameService);
     this.#answerHistory = inject(RecordedAnswersService);
+    this.#gameHistory = inject(GameHistoryService);
     this.#guess = signal(1000);
   }
 
@@ -31,6 +34,7 @@ export class GameOrchestratorService {
   }
 
   endGame(): void {
+    this.#gameHistory.recordGame();
     this.#router.navigate(["game", "summary"]);
   }
 

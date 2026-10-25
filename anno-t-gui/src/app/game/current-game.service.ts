@@ -60,6 +60,10 @@ export class CurrentGameService {
     this.#currentResult.set(null);
   }
 
+  activeGame(): Game | null {
+    return this.#game();
+  }
+
   currentQuestion(): Signal<Question | null> {
     return this.#currentQuestion;
   }
