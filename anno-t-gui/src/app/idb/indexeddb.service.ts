@@ -109,14 +109,6 @@ export class IndexedDBService<DBSchema extends DBOjectStores = DBOjectStores> {
       };
 
       request.onsuccess = () => {
-        if (navigator.storage) {
-          navigator.storage.persisted().then((isPersisted) => {
-            if (!isPersisted) {
-              navigator.storage.persist();
-            }
-          });
-        }
-
         const db = request.result;
 
         console.log(`${db.name} version ${db.version} ready`);
