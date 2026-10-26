@@ -12,10 +12,13 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedStatic;
 
+import se.aigr20.anno.game.application.ScoreCalculator;
+
 class QuestionTest {
   Question sut;
 
   MockedStatic<OffsetDateTime> nowStaticMock;
+  ScoreCalculator mockedScoreCalculator = (guess, correct) -> 100 - Math.abs(guess - correct);
 
   @BeforeEach
   void setUp() {
@@ -42,7 +45,7 @@ class QuestionTest {
                                                             final GuessResult expectedResult) {
     sut = new Question("", correctAnswer);
 
-    final GuessResult result = sut.guessAnswer(new Guess(guess, 0));
+    final GuessResult result = sut.guessAnswer(new Guess(guess, 0), mockedScoreCalculator);
     assertThat(result).isEqualTo(expectedResult);
   }
 }

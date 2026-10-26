@@ -17,6 +17,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
+import se.aigr20.anno.game.application.ScoreCalculator;
+
 @Entity
 @Table(schema = "anno", name = "created_games")
 public class Game {
@@ -47,9 +49,9 @@ public class Game {
     this.questions = new ArrayList<>();
   }
 
-  public GuessResult makeGuess(final Guess guess) {
+  public GuessResult makeGuess(final Guess guess, final ScoreCalculator scoreCalculator) {
     final Question question = getQuestions().get(guess.questionIndex());
-    return question.guessAnswer(guess);
+    return question.guessAnswer(guess, scoreCalculator);
   }
 
   public Long getId() {

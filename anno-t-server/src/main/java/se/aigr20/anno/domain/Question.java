@@ -12,6 +12,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
+import se.aigr20.anno.game.application.ScoreCalculator;
+
 @Entity
 @Table(schema = "anno", name = "questions")
 public class Question {
@@ -36,7 +38,7 @@ public class Question {
     this.correctAnswer = answer;
   }
 
-  public GuessResult guessAnswer(final Guess guess) {
+  public GuessResult guessAnswer(final Guess guess, final ScoreCalculator scoreCalculator) {
     final int distanceFromCorrect = Math.abs(guess.year() - getCorrectAnswer());
 
     final OffsetDateTime now = OffsetDateTime.now(ZONE_SWEDEN);
@@ -44,8 +46,7 @@ public class Question {
     return new GuessResult(distanceFromCorrect,
                            Math.abs(now.getYear() - getCorrectAnswer()),
                            getCorrectAnswer(),
-                           // TODO: Temporary scoring
-                           Math.max(100 - distanceFromCorrect, 0));
+                           scoreCalculator.calculate(guess.year(), getCorrectAnswer()));
   }
 
   public Long getId() {
