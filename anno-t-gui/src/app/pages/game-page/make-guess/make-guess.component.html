@@ -1,47 +1,55 @@
-<p class="guess">{{ currentGuess() | bcAd }}</p>
+<form [formRoot]="guessFormModel">
+  <div class="guess-container">
+    <input
+      class="guess"
+      [class.invalid]="guessFormModel().invalid()"
+      type="number"
+      [formField]="guessFormModel" />
+    <span class="guess-suffix">{{ suffix() }}</span>
+  </div>
 
-<div class="adjust-container">
-  <button
-    type="button"
-    class="btn"
-    (click)="adjustBy(-100)">
-    -100
-  </button>
-  <button
-    type="button"
-    class="btn"
-    (click)="adjustBy(-10)">
-    -10
-  </button>
-  <button
-    type="button"
-    class="btn"
-    (click)="adjustBy(-1)">
-    -1
-  </button>
-  <button
-    type="button"
-    class="btn"
-    (click)="adjustBy(1)">
-    +1
-  </button>
-  <button
-    type="button"
-    class="btn"
-    (click)="adjustBy(10)">
-    +10
-  </button>
-  <button
-    type="button"
-    class="btn"
-    (click)="adjustBy(100)">
-    +100
-  </button>
-</div>
+  <div class="adjust-container">
+    <button
+      type="button"
+      class="btn"
+      (click)="adjustBy(-100)">
+      -100
+    </button>
+    <button
+      type="button"
+      class="btn"
+      (click)="adjustBy(-10)">
+      -10
+    </button>
+    <button
+      type="button"
+      class="btn"
+      (click)="adjustBy(-1)">
+      -1
+    </button>
+    <button
+      type="button"
+      class="btn"
+      (click)="adjustBy(1)">
+      +1
+    </button>
+    <button
+      type="button"
+      class="btn"
+      (click)="adjustBy(10)">
+      +10
+    </button>
+    <button
+      type="button"
+      class="btn"
+      (click)="adjustBy(100)">
+      +100
+    </button>
+  </div>
 
-<button
-  type="button"
-  class="btn submit-guess"
-  (click)="makeGuess()">
-  Submit answer
-</button>
+  <button
+    type="submit"
+    class="btn submit-guess">
+    Submit answer
+  </button>
+</form>

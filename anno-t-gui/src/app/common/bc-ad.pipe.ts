@@ -9,7 +9,7 @@ export class BcAdPipe implements PipeTransform {
   }
 }
 
-function toSuffix(v: number): string {
+export function toSuffix(v: number): string {
   if (v === 0) {
     return "";
   }

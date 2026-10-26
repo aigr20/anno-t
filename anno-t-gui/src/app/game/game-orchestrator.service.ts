@@ -1,4 +1,4 @@
-import { inject, Service, signal, type Signal, type WritableSignal } from "@angular/core";
+import { inject, Service, signal, type WritableSignal } from "@angular/core";
 import { Router } from "@angular/router";
 import { map, take, type Observable } from "rxjs";
 import { CurrentGameService } from "./current-game.service";
@@ -65,7 +65,7 @@ export class GameOrchestratorService {
     this.#guess.set(1000);
   }
 
-  currentGuess(): Signal<number> {
+  currentGuess(): WritableSignal<number> {
     return this.#guess;
   }
 }

@@ -2,10 +2,40 @@
     display: block;
 }
 
+.guess-container {
+    display: block;
+    margin: 0 auto;
+    width: fit-content;
+}
+
 .guess {
     font-size: var(--text-l);
     text-align: center;
-    text-decoration: underline;
+    width: calc(var(--text-l) * 4);
+    background: transparent;
+    border: none;
+    border-bottom: 3px dashed var(--btn-bg);
+    appearance: textfield;
+}
+
+.guess::-webkit-outer-spin-button,
+.guess::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.guess.invalid {
+    border-color: var(--error);
+}
+
+.guess:focus-visible {
+    border-color: var(--btn-bg-highlight);
+    color: var(--btn-bg-highlight);
+    outline: none;
+}
+
+.guess-suffix {
+    font-size: var(--text-s);
 }
 
 .adjust-container {
