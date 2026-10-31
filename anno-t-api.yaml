@@ -4,6 +4,20 @@ info:
   version: 1.0.0
 
 paths:
+  /info:
+    get:
+      operationId: getInfo
+      summary: Get information about the server
+      tags:
+        - Info
+      responses:
+        "200":
+          description: "Information about the server hosting the game"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServerInfo"
+
   /game/current:
     get:
       operationId: getCurrentGame
@@ -134,4 +148,12 @@ components:
         title:
           type: string
         detail:
+          type: string
+
+    ServerInfo:
+      type: object
+      required:
+        - gameUrl
+      properties:
+        gameUrl:
           type: string
