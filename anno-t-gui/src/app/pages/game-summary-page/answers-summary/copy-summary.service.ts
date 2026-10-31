@@ -11,7 +11,7 @@ export class CopySummaryService {
 
   copy(): void {
     this.#gameHistory.todaysPlayedGame().subscribe((game) => {
-      const date = `${pad0(game.gameBegan.getUTCFullYear())}-${pad0(game.gameBegan.getUTCMonth() + 1)}-${pad0(game.gameBegan.getUTCDate())}`;
+      const date = `${pad0(game.gameBegan.getFullYear())}-${pad0(game.gameBegan.getMonth() + 1)}-${pad0(game.gameBegan.getDate())}`;
       const content = game.answers
         .map((answer) => answer.scoreReceived)
         .map(this.transformScoreToText.bind(this))
