@@ -1,5 +1,5 @@
 import { inject, Service } from "@angular/core";
-import { GameHistoryService } from "@anno-t/game/game-history.service";
+import { GameHistoryService, type RecordedGame } from "@anno-t/game/game-history.service";
 import { InfoService } from "@anno-t/generated-openapi";
 import { combineLatestWith, map, shareReplay, type Observable } from "rxjs";
 
@@ -23,7 +23,7 @@ export class CopySummaryService {
       .todaysPlayedGame()
       .pipe(combineLatestWith(this.#gameUrl$))
       .subscribe(([game, gameUrl]) => {
-        const date = `${pad0(game.gameBegan.getFullYear())}-${pad0(game.gameBegan.getMonth() + 1)}-${pad0(game.gameBegan.getDate())}`;
+        const date = this.getDateString(game);
         const content = game.answers
           .map((answer) => answer.scoreReceived)
           .map(this.transformScoreToText.bind(this))
@@ -34,6 +34,16 @@ ${content}
 
 Try it yourself at ${gameUrl}`);
       });
+  }
+
+  private getDateString(game: RecordedGame): string {
+    if (globalThis.Temporal) {
+      const zdt = game.gameBegan.toTemporalInstant().toZonedDateTimeISO("Europe/Stockholm");
+      return `${zdt.year}-${pad0(zdt.month)}-${pad0(zdt.day)}`;
+    }
+
+    console.warn("Temporal is unavailable, date might be incorrect");
+    return `${pad0(game.gameBegan.getFullYear())}-${pad0(game.gameBegan.getMonth() + 1)}-${pad0(game.gameBegan.getDate())}`;
   }
 
   private transformScoreToText(score: number): string {
