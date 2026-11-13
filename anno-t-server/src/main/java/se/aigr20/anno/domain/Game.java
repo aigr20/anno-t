@@ -14,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -36,7 +37,9 @@ public class Game {
   @Column(name = "ext_id", nullable = false) private UUID externalId;
 
   @OneToMany(fetch = FetchType.LAZY)
-  @JoinColumn(name = "game_id") private List<Question> questions;
+  @JoinColumn(name = "game_id")
+  @OrderBy
+  private List<Question> questions;
 
   protected Game() {
     questions = new ArrayList<>();
