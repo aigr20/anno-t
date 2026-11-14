@@ -45,5 +45,4 @@ public class GameResource implements GameApi {
     final se.aigr20.anno.generated.model.GuessResult dto = resultMapper.toDto(result);
     return Response.ok().entity(dto).build();
   }
-
 }

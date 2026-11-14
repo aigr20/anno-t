@@ -73,6 +73,29 @@ paths:
               schema:
                 $ref: "#/components/schemas/DetailedError"
 
+  /leaderboard/{gameId}/entry:
+    post:
+      operationId: submitGameResult
+      summary: Save the result of the game to the leaderboard
+      tags:
+        - Leaderboard
+      parameters:
+        - in: path
+          name: gameId
+          schema:
+            type: string
+            format: uuid
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GameResult"
+      responses:
+        "204":
+          description: "The result has been saved"
+
 components:
   schemas:
     Game:
@@ -157,3 +180,22 @@ components:
       properties:
         gameUrl:
           type: string
+
+    GameResult:
+      type: object
+      required:
+        - totalScore
+        - playerAlias
+        - scoreByQuestion
+      properties:
+        totalScore:
+          type: integer
+        playerAlias:
+          type: string
+        scoreByQuestion:
+          type: array
+          items:
+            type: integer
+          description: "Score received, in the same order as the questions"
+          minItems: 5
+          maxItems: 5

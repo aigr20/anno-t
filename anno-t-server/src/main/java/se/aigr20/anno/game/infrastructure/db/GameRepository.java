@@ -9,10 +9,9 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
 import se.aigr20.anno.domain.Game;
-import se.aigr20.anno.game.application.GameRegistry;
 
 @ApplicationScoped
-public class GameRepository implements GameRegistry {
+public class GameRepository {
   private final EntityManager entityManager;
 
   @Inject
@@ -30,7 +29,6 @@ public class GameRepository implements GameRegistry {
     return Optional.ofNullable(found);
   }
 
-  @Override
   public Optional<Game> findGameByExternalId(final UUID externalId) {
     final String sql = "from Game game where game.externalId = :id";
     final Game found = entityManager

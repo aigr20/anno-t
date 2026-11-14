@@ -1,9 +1,10 @@
 import { inject, Service, signal, type WritableSignal } from "@angular/core";
 import { Router } from "@angular/router";
-import { map, take, type Observable } from "rxjs";
+import { map, switchMap, take, type Observable } from "rxjs";
 import { CurrentGameService } from "./current-game.service";
 import { GameHistoryService } from "./game-history.service";
 import { ScoreService } from "./score.service";
+import { LeaderboardService } from "@anno-t/leaderboard/leaderboard.service";
 
 @Service()
 export class GameOrchestratorService {
@@ -11,6 +12,7 @@ export class GameOrchestratorService {
   readonly #score: ScoreService;
   readonly #currentGame: CurrentGameService;
   readonly #gameHistory: GameHistoryService;
+  readonly #leaderboard: LeaderboardService;
   readonly #guess: WritableSignal<number>;
 
   constructor() {
@@ -18,6 +20,7 @@ export class GameOrchestratorService {
     this.#score = inject(ScoreService);
     this.#currentGame = inject(CurrentGameService);
     this.#gameHistory = inject(GameHistoryService);
+    this.#leaderboard = inject(LeaderboardService);
     this.#guess = signal(1000);
   }
 
@@ -31,9 +34,12 @@ export class GameOrchestratorService {
   }
 
   endGame(): void {
-    this.#gameHistory.recordGame().subscribe(() => {
-      this.#router.navigate(["game", "summary"]);
-    });
+    this.#gameHistory
+      .recordGame()
+      .pipe(switchMap(() => this.#leaderboard.saveUserScore()))
+      .subscribe(() => {
+        this.#router.navigate(["game", "summary"]);
+      });
   }
 
   adjustGuess(by: number): void {

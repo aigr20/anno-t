@@ -1,0 +1,25 @@
+<dialog
+  #dialog
+  (cancel)="$event.preventDefault(); close(null)">
+  <form (submit)="$event.preventDefault(); submit()">
+    @if (options().title; as title) {
+      <h2>{{ title }}</h2>
+    }
+    <p>{{ options().message }}</p>
+
+    <ng-container #host></ng-container>
+
+    <div class="actions">
+      <button
+        type="button"
+        (click)="close(null)">
+        {{ options()?.cancelLabel ?? "Cancel" }}
+      </button>
+      <button
+        type="submit"
+        [disabled]="!isValid()">
+        {{ options()?.okLabel ?? "OK" }}
+      </button>
+    </div>
+  </form>
+</dialog>
