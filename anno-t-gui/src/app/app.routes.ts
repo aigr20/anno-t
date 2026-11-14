@@ -27,4 +27,12 @@ export const routes: Routes = [
         (m) => m.GameSummaryPageComponent,
       ),
   },
+  {
+    path: "leaderboard",
+    title: "Anno't - Leaderboard",
+    loadComponent: () =>
+      import("./pages/leaderboard-page/leaderboard-page.component").then(
+        (m) => m.LeaderboardPageComponent,
+      ),
+  },
 ];

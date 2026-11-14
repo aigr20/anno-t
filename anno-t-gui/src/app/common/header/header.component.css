@@ -2,3 +2,22 @@
     font-size: var(--text-xl);
     text-align: center;
 }
+
+.navigation {
+    width: 100%;
+    font-size: var(--text-l);
+    text-align: center;
+    margin: 8px;
+}
+
+.navigation a {
+    color: var(--link);
+    letter-spacing: 3%;
+    font-weight: bold;
+    margin: 0 8px;
+}
+
+.navigation a:hover,
+.navigation a.current {
+    color: var(--link-highlight);
+}
