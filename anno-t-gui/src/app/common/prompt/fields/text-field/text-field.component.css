@@ -1,0 +1,6 @@
+input {
+    background: var(--bg-drk);
+    border: none;
+    font-size: var(--text-m);
+    padding: 0.25rem;
+}

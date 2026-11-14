@@ -39,7 +39,8 @@ export class LeaderboardAliasService {
 
     return this.#promptService
       .text(
-        "If you'd like to save the result to the leaderboard, please input a name to be displayed in the leaderboard.",
+        "If you'd like to save the result to the leaderboard, please enter a name to be displayed in the leaderboard.",
+        { placeholder: "Name" },
       )
       .pipe(
         tap((alias) => {

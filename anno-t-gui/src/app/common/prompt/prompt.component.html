@@ -1,22 +1,25 @@
 <dialog
+  class="dialog-container"
   #dialog
   (cancel)="$event.preventDefault(); close(null)">
   <form (submit)="$event.preventDefault(); submit()">
     @if (options().title; as title) {
       <h2>{{ title }}</h2>
     }
-    <p>{{ options().message }}</p>
+    <p class="message">{{ options().message }}</p>
 
     <ng-container #host></ng-container>
 
     <div class="actions">
       <button
         type="button"
+        class="btn"
         (click)="close(null)">
         {{ options()?.cancelLabel ?? "Cancel" }}
       </button>
       <button
         type="submit"
+        class="btn"
         [disabled]="!isValid()">
         {{ options()?.okLabel ?? "OK" }}
       </button>

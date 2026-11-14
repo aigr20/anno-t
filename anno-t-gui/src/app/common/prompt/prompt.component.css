@@ -1,0 +1,32 @@
+:host {
+    --dialog-padding: 1.5rem 2rem;
+    --dialog-border-width: 4px;
+}
+
+.dialog-container {
+    background: var(--bg);
+    margin: auto;
+    padding: var(--dialog-padding);
+    border: var(--dialog-border-width) solid var(--btn-bg-highlight);
+    max-width: clamp(50%, var(--main-max-width), 90%);
+}
+
+.message {
+    font-size: var(--text-s);
+    margin-bottom: 0.35rem;
+}
+
+.actions {
+    margin: 0.5rem 0 0;
+}
+
+.actions button:first-of-type {
+    margin-right: 0.5rem;
+}
+
+@media screen and (width < 1366px) {
+    :host {
+        --dialog-padding: 0.5rem 1rem;
+        --dialog-border-width: 2px;
+    }
+}
