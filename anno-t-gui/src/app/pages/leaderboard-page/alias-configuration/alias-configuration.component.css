@@ -1,0 +1,29 @@
+.label-and-field {
+    font-size: var(--text-s);
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    align-items: center;
+}
+
+.label-and-field input {
+    font-size: inherit;
+    background: var(--bg-drk);
+    border: none;
+    padding: 0.25rem;
+    height: fit-content;
+    width: 20ch;
+}
+
+.actions {
+    padding: 0.5rem 0;
+}
+
+.actions .btn:first-child {
+    margin-right: 6px;
+}
+
+.message {
+    font-size: var(--text-s);
+    margin-bottom: 0.65rem;
+}

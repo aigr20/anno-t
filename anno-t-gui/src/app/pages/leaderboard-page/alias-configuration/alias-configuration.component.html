@@ -1,0 +1,27 @@
+<form [formRoot]="aliasFormModel">
+  <div class="label-and-field">
+    <label for="leaderboard-alias">Choose your display name:</label>
+    <input
+      type="text"
+      id="leaderboard-alias"
+      placeholder="No name chosen yet"
+      [class.invalid]="aliasFormModel().invalid()"
+      [formField]="aliasFormModel" />
+  </div>
+  <div class="actions">
+    <button
+      type="submit"
+      class="btn">
+      Save
+    </button>
+    <button
+      type="button"
+      class="btn"
+      [disabled]="clearDisabled()"
+      (click)="clearAlias()">
+      Clear
+    </button>
+  </div>
+</form>
+
+<p class="message">{{ message() }}</p>

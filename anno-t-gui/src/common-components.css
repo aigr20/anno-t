@@ -15,22 +15,39 @@
     background: var(--btn-bg-highlight);
 }
 
+.btn:disabled {
+    --btn-bg: var(--btn-bg-disabled);
+    cursor: not-allowed;
+}
+
+.btn:disabled:hover {
+    --btn-bg-highlight: var(--btn-bg);
+}
+
 .tbl {
     border-collapse: collapse;
-    margin: 0.5rem;
+    margin: 0.5rem 0;
 }
 
 .tbl > thead th {
     font-size: var(--text-m);
-    padding: 0 0.5rem;
+    padding: 0 0.5rem 0 0.25rem;
     text-align: left;
     border-bottom: 1px solid var(--btn-bg);
+}
+
+.tbl > thead th:first-child {
+    padding: 0 0.25rem 0 0;
 }
 
 .tbl > tbody td {
     font-size: var(--text-s);
     padding: 0.25rem;
     border-bottom: 1px solid var(--btn-bg);
+}
+
+.tbl > tbody td:first-child {
+    padding-left: 0;
 }
 
 .tbl > tbody tr:last-child td {

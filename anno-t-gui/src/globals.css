@@ -19,3 +19,11 @@ body {
     width: 100%;
     padding: 10px;
 }
+
+p {
+    font-size: var(--text-m);
+}
+
+label {
+    cursor: text;
+}
