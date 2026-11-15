@@ -14,3 +14,25 @@
 .btn:hover {
     background: var(--btn-bg-highlight);
 }
+
+.tbl {
+    border-collapse: collapse;
+    margin: 0.5rem;
+}
+
+.tbl > thead th {
+    font-size: var(--text-m);
+    padding: 0 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--btn-bg);
+}
+
+.tbl > tbody td {
+    font-size: var(--text-s);
+    padding: 0.25rem;
+    border-bottom: 1px solid var(--btn-bg);
+}
+
+.tbl > tbody tr:last-child td {
+    border-bottom: none;
+}

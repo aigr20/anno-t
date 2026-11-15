@@ -25,6 +25,7 @@
         "@angular/build": "^22.2.3",
         "@angular/cli": "^22.2.3",
         "@angular/compiler-cli": "^22.2.0",
+        "@ng-openapi/http-resource": "^0.2.0",
         "@types/node": "^26.6.5",
         "ng-openapi": "^0.4.1",
         "prettier": "^3.8.1",

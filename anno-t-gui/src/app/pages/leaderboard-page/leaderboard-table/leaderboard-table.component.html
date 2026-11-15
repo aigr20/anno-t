@@ -1,0 +1,26 @@
+@if (leaderboardResource.error()) {
+  ERROR: Failed to load
+} @else if (leaderboardResource.value(); as leaderboard) {
+  @if (leaderboard.records.length === 0) {
+    <p>No entries so far today</p>
+  } @else {
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>Player</th>
+          <th>Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (record of leaderboard.records; track record.player) {
+          <tr>
+            <td>{{ record.player }}</td>
+            <td>{{ record.score }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+} @else if (showLoading()) {
+  <p>Loading...</p>
+}

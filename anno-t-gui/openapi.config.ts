@@ -1,4 +1,5 @@
 import { defineConfig, type IPluginGenerator, type PluginGeneratorContext } from "ng-openapi";
+import { HttpResourcePlugin } from "@ng-openapi/http-resource";
 import { readdir } from "node:fs/promises";
 
 export class TsNoCheckPlugin implements IPluginGenerator {
@@ -25,5 +26,5 @@ export default defineConfig({
   input: "../anno-t-api.yaml",
   output: "./src/generated-openapi",
   options: { dateType: "Date", enumStyle: "union" },
-  plugins: [TsNoCheckPlugin],
+  plugins: [TsNoCheckPlugin, HttpResourcePlugin],
 });

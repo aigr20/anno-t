@@ -1,24 +1,24 @@
-<table>
+<table class="tbl">
   <thead>
     <tr>
-      <th class="heading">Question</th>
-      <th class="heading">Your answer</th>
-      <th class="heading">Correct answer</th>
-      <th class="heading">Score</th>
+      <th>Question</th>
+      <th>Your answer</th>
+      <th>Correct answer</th>
+      <th>Score</th>
     </tr>
   </thead>
   <tbody>
     @for (answer of answers(); track answer.question) {
       <tr>
-        <td class="data">{{ answer.question }}</td>
-        <td class="data">{{ answer.userAnswer | bcAd }}</td>
-        <td class="data">
+        <td>{{ answer.question }}</td>
+        <td>{{ answer.userAnswer | bcAd }}</td>
+        <td>
           {{ answer.correctAnswer | bcAd }}
           @if (shouldPresentDifference(answer)) {
             ({{ presentDifference(answer) }})
           }
         </td>
-        <td class="data">{{ answer.scoreReceived }}</td>
+        <td>{{ answer.scoreReceived }}</td>
       </tr>
     }
   </tbody>
