@@ -111,12 +111,10 @@ paths:
       responses:
         "200":
           description: The leaderboard
-        "404":
-          description: "No game was played on that date"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DetailedError"
+                $ref: "#/components/schemas/Leaderboard"
 
 components:
   schemas:

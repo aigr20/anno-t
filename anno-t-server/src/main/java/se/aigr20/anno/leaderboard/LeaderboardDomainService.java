@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -30,9 +31,13 @@ public class LeaderboardDomainService {
 
   public List<LeaderboardEntry> findLeaderboardOnDate(final LocalDate date) {
     final OffsetDateTime queryDate = date.atStartOfDay(ZONE_SWEDEN).toOffsetDateTime();
-    final Game game = gameRegistry.findGameOnDate(queryDate).orElseThrow();
+    final Optional<Game> game = gameRegistry.findGameOnDate(queryDate);
+    if (game.isEmpty()) {
+      return List.of();
+    }
+
     final List<LeaderboardEntry> entries = leaderboardRepository
-            .getLeaderboardForGameId(game.getExternalId());
+            .getLeaderboardForGameId(game.get().getExternalId());
     entries.sort(Comparator.comparingInt(LeaderboardEntry::getTotalScore).reversed());
 
     return entries;

@@ -1,5 +1,6 @@
 package se.aigr20.anno.leaderboard;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static se.aigr20.anno.common.Constants.ZONE_SWEDEN;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -55,5 +56,15 @@ class LeaderboardDomainServiceTest {
     final List<LeaderboardEntry> entries = sut.findLeaderboardOnDate(date);
 
     assertThat(entries).containsExactly(entry1, entry2);
+  }
+
+  @Test
+  void when_NoGamePlayed_then_ReturnNoEntries() {
+    final LocalDate date = LocalDate.now();
+    when(gameRegistry.findGameOnDate(any(OffsetDateTime.class))).thenReturn(Optional.empty());
+
+    final List<LeaderboardEntry> entries = sut.findLeaderboardOnDate(date);
+
+    assertThat(entries).isEmpty();
   }
 }
