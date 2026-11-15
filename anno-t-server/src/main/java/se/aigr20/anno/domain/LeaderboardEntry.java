@@ -32,14 +32,17 @@ public class LeaderboardEntry {
 
   @Column(name = "player", nullable = false) String player;
 
+  @Column(name = "total_score", nullable = false) int totalScore;
+
   @Column(name = "game_id", nullable = false) UUID gameId;
 
   @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST})
   @JoinColumn(name = "leaderboard_entry_id", nullable = false)
   @OrderBy("order ASC") List<LeaderboardQuestionEntry> questions;
 
-  public LeaderboardEntry(final String player, final UUID gameId) {
+  public LeaderboardEntry(final String player, final int totalScore, final UUID gameId) {
     this.player = Objects.requireNonNull(player);
+    this.totalScore = totalScore;
     this.gameId = Objects.requireNonNull(gameId);
     this.questions = new ArrayList<>(5);
   }
@@ -54,6 +57,10 @@ public class LeaderboardEntry {
 
   public String getPlayer() {
     return player;
+  }
+
+  public int getTotalScore() {
+    return totalScore;
   }
 
   public UUID getGameId() {

@@ -95,6 +95,28 @@ paths:
       responses:
         "204":
           description: "The result has been saved"
+  /leaderboard:
+    get:
+      operationId: getLeaderboard
+      summary: Get the leaderboard on a date.
+      tags:
+        - Leaderboard
+      parameters:
+        - in: query
+          name: date
+          schema:
+            type: string
+            format: date
+          required: false
+      responses:
+        "200":
+          description: The leaderboard
+        "404":
+          description: "No game was played on that date"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DetailedError"
 
 components:
   schemas:
@@ -199,3 +221,40 @@ components:
           description: "Score received, in the same order as the questions"
           minItems: 5
           maxItems: 5
+
+    Leaderboard:
+      type: object
+      required:
+        - records
+      properties:
+        records:
+          type: array
+          items:
+            $ref: "#/components/schemas/LeaderboardRecord"
+
+    LeaderboardRecord:
+      type: object
+      required:
+        - player
+        - score
+        - scoreByQuestion
+      properties:
+        player:
+          type: string
+        score:
+          type: integer
+        scoreByQuestion:
+          type: array
+          items:
+            $ref: "#/components/schemas/LeaderboardQuestion"
+
+    LeaderboardQuestion:
+      type: object
+      required:
+        - score
+        - index
+      properties:
+        score:
+          type: integer
+        index:
+          type: integer

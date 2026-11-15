@@ -1,5 +1,7 @@
 package se.aigr20.anno.game.application;
 
+import java.time.OffsetDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 import se.aigr20.anno.domain.Game;
@@ -13,4 +15,6 @@ public interface GameRegistry {
    * @throws NoGameWithIdException In case no game with that id is found.
    */
   Game requireGameWithExternalId(UUID externalId);
+
+  Optional<Game> findGameOnDate(final OffsetDateTime date);
 }

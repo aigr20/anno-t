@@ -38,4 +38,9 @@ public class GameDomainService implements GameRegistry {
             .findGameByExternalId(externalId)
             .orElseThrow(() -> new NoGameWithIdFoundException(externalId));
   }
+
+  @Override
+  public Optional<Game> findGameOnDate(OffsetDateTime date) {
+    return gameRepository.findActiveGameAtTimestamp(date);
+  }
 }

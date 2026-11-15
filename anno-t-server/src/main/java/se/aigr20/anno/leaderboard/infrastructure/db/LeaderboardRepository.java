@@ -1,5 +1,8 @@
 package se.aigr20.anno.leaderboard.infrastructure.db;
 
+import java.util.List;
+import java.util.UUID;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -20,5 +23,13 @@ public class LeaderboardRepository {
   @Transactional(TxType.REQUIRED)
   public void persist(final LeaderboardEntry leaderboardEntry) {
     entityManager.persist(leaderboardEntry);
+  }
+
+  public List<LeaderboardEntry> getLeaderboardForGameId(final UUID gameId) {
+    return entityManager
+            .createQuery("from LeaderboardEntry leaderboard where leaderboard.gameId = :gameId",
+                         LeaderboardEntry.class)
+            .setParameter("gameId", gameId)
+            .getResultList();
   }
 }

@@ -4,6 +4,7 @@ create table anno.leaderboard_game_entries (
   id bigserial primary key,
   game_id uuid not null,
   player text not null,
+  total_score integer not null,
 
   constraint fk_leaderboard_game foreign key (game_id) references anno.created_games (ext_id)
 );

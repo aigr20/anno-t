@@ -1,5 +1,12 @@
 package se.aigr20.anno.leaderboard;
 
+import static se.aigr20.anno.common.Constants.ZONE_SWEDEN;
+
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.util.Comparator;
+import java.util.List;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -21,9 +28,20 @@ public class LeaderboardDomainService {
     this.leaderboardRepository = leaderboardRepository;
   }
 
+  public List<LeaderboardEntry> findLeaderboardOnDate(final LocalDate date) {
+    final OffsetDateTime queryDate = date.atStartOfDay(ZONE_SWEDEN).toOffsetDateTime();
+    final Game game = gameRegistry.findGameOnDate(queryDate).orElseThrow();
+    final List<LeaderboardEntry> entries = leaderboardRepository
+            .getLeaderboardForGameId(game.getExternalId());
+    entries.sort(Comparator.comparingInt(LeaderboardEntry::getTotalScore).reversed());
+
+    return entries;
+  }
+
   public void recordResult(final NewLeaderboardRecord newRecord) {
     final Game game = gameRegistry.requireGameWithExternalId(newRecord.gameId());
     final LeaderboardEntry entry = new LeaderboardEntry(newRecord.playerAlias(),
+                                                        newRecord.totalScore(),
                                                         game.getExternalId());
 
     for (int i = 0; i < newRecord.scoreByQuestion().size(); i++) {
